@@ -19,3 +19,15 @@ export const unauthorizedRoutes: RouteObject = {
     },
   ],
 };
+
+export const authorizedRoutes: RouteObject = {
+  path: ROUTES.ROOT,
+  element: <Unauthorized />,
+  children: [
+    {
+      path: ROUTES.LOGIN,
+      index: true,
+      element: <>Home</>,
+    },
+  ],
+};

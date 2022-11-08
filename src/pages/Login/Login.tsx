@@ -1,23 +1,25 @@
 import React from "react";
 
 import { Box, Button, Typography } from "@mui/material";
+import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 
 import { TrimInput } from "components/shared";
+import { useStore } from "hooks/useStore";
+import { LoginData } from "types";
 
-type FormData = {
-  email: string;
-  password: string;
-};
+export const Login: React.FC = observer(() => {
+  const { userStore } = useStore();
 
-export const Login: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<LoginData>();
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit((data) => {
+    userStore.login(data);
+  });
 
   return (
     <Box width="100%" maxWidth="1200px" m="0 auto" p="1rem">
@@ -44,4 +46,4 @@ export const Login: React.FC = () => {
       </form>
     </Box>
   );
-};
+});

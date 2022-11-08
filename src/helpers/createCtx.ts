@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 
-export const createCtx = <A extends Record<string, unknown> | null>() => {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const createCtx = <A extends {} | null>() => {
   const ctx = createContext<A | undefined>(undefined);
 
   const useCtx = () => {
