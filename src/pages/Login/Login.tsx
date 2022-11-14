@@ -39,9 +39,13 @@ export const Login: React.FC = observer(() => {
             {...register("password", { required: true })}
             error={!!errors.password}
           />
-          <Button variant="contained" type="submit">
-            Submit
-          </Button>
+          {userStore.loading ? (
+            "Loading..."
+          ) : (
+            <Button variant="contained" type="submit">
+              Submit
+            </Button>
+          )}
         </Box>
       </form>
     </Box>

@@ -3,7 +3,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { useRoutes } from "react-router-dom";
 
-import { Loading } from "components/shared/Loading";
+import { Loading } from "components/shared";
 
 import { RootStoreContextProvider } from "./context/RootStoreContext";
 import { ThemeProvider } from "./context/ThemeProvider";

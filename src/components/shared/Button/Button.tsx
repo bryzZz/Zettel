@@ -6,18 +6,18 @@ import { styled } from "@mui/material/styles";
 
 export type ButtonProps = MaterialButtonProps;
 
-// declare module "@mui/material/Button" {
-//   interface ButtonPropsVariantOverrides {
-//     smallButton: true;
-//     primary: true;
-//     secondary: true;
-//     checkBtn: true;
-//     iconBtn: true;
-//     type?: string;
-//   }
-// }
+declare module "@mui/material/Button" {
+  interface ButtonPropsVariantOverrides {
+    smallButton: true;
+    primary: true;
+    secondary: true;
+    checkBtn: true;
+    iconBtn: true;
+    type?: string;
+  }
+}
 
-// const MaterialButton = styled(MaterialUIButton)({});
+const MaterialButton = styled(MaterialUIButton)({});
 
 export const Button = ({
   children,
@@ -31,7 +31,7 @@ export const Button = ({
   sx,
   fullWidth,
 }: ButtonProps): JSX.Element => (
-  <MaterialUIButton
+  <MaterialButton
     onClick={onClick}
     variant={variant}
     color={color}
@@ -43,5 +43,5 @@ export const Button = ({
     fullWidth={fullWidth}
   >
     {children}
-  </MaterialUIButton>
+  </MaterialButton>
 );

@@ -1,7 +1,9 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable prefer-destructuring */
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
   onAuthStateChanged,
 } from "firebase/auth";
 import { makeAutoObservable } from "mobx";
@@ -23,6 +25,13 @@ export class UserStore {
 
     onAuthStateChanged(firebaseAuth, (user) => {
       if (user) {
+        const data: User = {
+          id: user.uid,
+          email: user.email!,
+        };
+
+        this.user = data;
+
         this.isAuth = true;
       } else {
         this.isAuth = false;
@@ -33,40 +42,34 @@ export class UserStore {
   }
 
   register({ email, password }: RegisterData) {
-    createUserWithEmailAndPassword(firebaseAuth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential);
-
-        const data: User = {
-          id: userCredential.user.uid,
-          email: userCredential.user.email!,
-        };
-
-        this.user = data;
-        this.isAuth = true;
-      })
-      .catch((error) => {
+    createUserWithEmailAndPassword(firebaseAuth, email, password).catch(
+      (error) => {
         const errorMessage = error.message;
 
         console.error(errorMessage);
-      });
+      }
+    );
   }
 
   login({ email, password }: LoginData) {
-    signInWithEmailAndPassword(firebaseAuth, email, password)
-      .then((userCredential) => {
-        const data: User = {
-          id: userCredential.user.uid,
-          email: userCredential.user.email!,
-        };
+    this.loading = true;
 
-        this.user = data;
-        this.isAuth = true;
-      })
+    signInWithEmailAndPassword(firebaseAuth, email, password)
       .catch((error) => {
         const errorMessage = error.message;
 
         console.error(errorMessage);
+      })
+      .finally(() => {
+        this.loading = false;
       });
+  }
+
+  logout() {
+    signOut(firebaseAuth).catch((error) => {
+      const errorMessage = error.message;
+
+      console.error(errorMessage);
+    });
   }
 }

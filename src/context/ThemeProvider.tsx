@@ -1,11 +1,8 @@
-import {
-  ThemeProvider as MUIThemeProvider,
-  createTheme,
-  CssBaseline,
-} from "@mui/material";
-import { ChildrenType } from "../types";
+import { ThemeProvider as MUIThemeProvider, CssBaseline } from "@mui/material";
 
-const theme = createTheme();
+import { defaultTheme } from "themes/default";
+
+import { ChildrenType } from "../types";
 
 interface ThemeProviderProps {
   children: ChildrenType;
@@ -13,7 +10,7 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   return (
-    <MUIThemeProvider theme={theme}>
+    <MUIThemeProvider theme={defaultTheme}>
       {children}
       <CssBaseline />
     </MUIThemeProvider>

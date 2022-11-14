@@ -1,7 +1,8 @@
 import { RouteObject } from "react-router-dom";
 
 import { ROUTES } from "../constants";
-import { Login, Register } from "../pages";
+import { Login, Register, Home } from "../pages";
+import { Authorized } from "../pages/Layouts/Authorized";
 import { Unauthorized } from "../pages/Layouts/Unauthorized";
 
 export const unauthorizedRoutes: RouteObject = {
@@ -22,12 +23,12 @@ export const unauthorizedRoutes: RouteObject = {
 
 export const authorizedRoutes: RouteObject = {
   path: ROUTES.ROOT,
-  element: <Unauthorized />,
+  element: <Authorized />,
   children: [
     {
       path: ROUTES.LOGIN,
       index: true,
-      element: <>Home</>,
+      element: <Home />,
     },
   ],
 };
