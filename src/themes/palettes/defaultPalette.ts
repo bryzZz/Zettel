@@ -5,6 +5,7 @@ type Custom = {
     main: string;
     light: string;
     lighter: string;
+    contrastText: string;
   };
   border: {
     main: string;
@@ -21,6 +22,10 @@ declare module "@mui/material/styles" {
 }
 
 export const defaultPalette = createPalette({
+  text: {
+    primary: "#fff",
+    secondary: "#fff",
+  },
   primary: {
     main: "#191919",
     dark: "#470073",
@@ -42,6 +47,7 @@ export const defaultPalette = createPalette({
       main: "#202020",
       light: "#242424",
       lighter: "#282828",
+      contrastText: "#ffffff",
     },
     border: {
       main: "#484848",

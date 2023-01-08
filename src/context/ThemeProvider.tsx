@@ -2,10 +2,8 @@ import { ThemeProvider as MUIThemeProvider, CssBaseline } from "@mui/material";
 
 import { defaultTheme } from "themes/default";
 
-import { ChildrenType } from "../types";
-
 interface ThemeProviderProps {
-  children: ChildrenType;
+  children: React.ReactNode;
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {

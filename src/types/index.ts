@@ -10,4 +10,6 @@ export type LoginData = {
 
 export type RegisterData = LoginData;
 
-export type ChildrenType = JSX.Element[] | JSX.Element | null;
+export type Note = {
+  text: string;
+};

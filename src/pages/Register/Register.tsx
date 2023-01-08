@@ -21,8 +21,8 @@ export const Register: React.FC = () => {
   });
 
   return (
-    <Box width="100%" maxWidth="1200px" m="0 auto" p="1rem">
-      <Typography sx={{ mb: "2rem" }}>Login</Typography>
+    <Box width="100%" maxWidth="500px">
+      <Typography sx={{ mb: "2rem" }}>Register</Typography>
       <form onSubmit={onSubmit}>
         <Box display="flex" flexDirection="column" gap="1rem" maxWidth="400px">
           <TrimInput

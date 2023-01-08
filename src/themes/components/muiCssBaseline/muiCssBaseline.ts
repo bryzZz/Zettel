@@ -14,8 +14,9 @@ export const muiCssBaseline = (): muiCssBaselineProps => ({
     "body, html, #root": {
       height: "100%",
       backgroundColor: defaultPalette.custom.background.main,
+      color: defaultPalette.custom.background.contrastText,
     },
-    "*": {
+    "*. *::before, *::after": {
       margin: 0,
       padding: 0,
     },

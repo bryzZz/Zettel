@@ -6,10 +6,12 @@ import { Outlet } from "react-router-dom";
 export const Unauthorized: React.FC = () => {
   return (
     <Box
-      sx={{
-        display: "flex",
-        minHeight: "calc(100vh - calc(100vh - 100%))",
-      }}
+      width="100%"
+      maxWidth="1200px"
+      display="flex"
+      justifyContent="center"
+      m="0 auto"
+      p="1rem"
     >
       <Outlet />
     </Box>

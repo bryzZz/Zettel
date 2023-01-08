@@ -33,6 +33,8 @@ export class UserStore {
         this.user = data;
 
         this.isAuth = true;
+
+        this.rootStore.notesStore.subscribeToNotes();
       } else {
         this.isAuth = false;
       }
