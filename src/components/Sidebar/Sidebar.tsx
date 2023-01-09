@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import { TrimInput } from "components/shared";
 import { useStore } from "hooks/useStore";
@@ -12,12 +13,14 @@ import { SidebarContainer } from "./styledComponents/SidebarContainer";
 
 export const Sidebar: React.FC = observer(() => {
   const {
-    notesStore: { notes, newNote, setCurrentNoteName },
+    notesStore: { notes, newNote },
   } = useStore();
 
-  const [creatingNote, setCreatingNote] = useState(false);
+  const navigate = useNavigate();
 
   const { register, handleSubmit, reset } = useForm<{ newNoteName: string }>();
+
+  const [creatingNote, setCreatingNote] = useState(false);
 
   const onSubmit = handleSubmit(({ newNoteName }) => {
     if (newNoteName) {
@@ -32,8 +35,8 @@ export const Sidebar: React.FC = observer(() => {
     setCreatingNote((p) => !p);
   };
 
-  const handleSelectNote = (noteName: string) => {
-    setCurrentNoteName(noteName);
+  const handleSelectNote = (id: string) => {
+    navigate(`notes/${id}`);
   };
 
   return (
@@ -43,6 +46,7 @@ export const Sidebar: React.FC = observer(() => {
         <form onSubmit={onSubmit}>
           <TrimInput
             {...register("newNoteName", { required: true })}
+            autoFocus
             autoComplete="off"
             sx={{
               "& .MuiOutlinedInput-root": {
@@ -60,9 +64,9 @@ export const Sidebar: React.FC = observer(() => {
           />
         </form>
       )}
-      {Object.entries(notes).map(([noteName, noteData]) => (
-        <Box key={noteName} onClick={() => handleSelectNote(noteName)}>
-          <Typography>{noteName}</Typography>
+      {notes.map(({ id, name }) => (
+        <Box key={id} onClick={() => handleSelectNote(id)}>
+          <Typography>{name}</Typography>
         </Box>
       ))}
     </SidebarContainer>

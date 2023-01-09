@@ -3,20 +3,25 @@ import React, { useRef, useState } from "react";
 import { Box, Button, Typography, TextField } from "@mui/material";
 import MarkdownIt from "markdown-it";
 import { observer } from "mobx-react-lite";
+import { useParams } from "react-router-dom";
 
 import { useStore } from "hooks/useStore";
 
 export const NoteView = observer((): JSX.Element | null => {
   const {
-    notesStore: { currentNoteName, currentNote, updateCurrentNote },
+    notesStore: { getNote, updateNote },
   } = useStore();
+
+  const { id } = useParams();
 
   const { current: md } = useRef(new MarkdownIt({ html: true }));
   const [editMode, setEditMode] = useState(false);
 
+  const currentNote = getNote(id || "");
+
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value !== null) {
-      updateCurrentNote(e.target.value);
+    if (e.target.value !== null && id !== undefined) {
+      updateNote(id, e.target.value);
     }
   };
 
@@ -36,9 +41,10 @@ export const NoteView = observer((): JSX.Element | null => {
       >
         Toggle Mode
       </Button>
-      <Typography variant="h1">{currentNoteName}</Typography>
+      <Typography variant="h1">{currentNote?.name}</Typography>
       {editMode ? (
         <TextField
+          autoFocus
           multiline
           value={currentNote?.text || ""}
           onChange={handleTextChange}

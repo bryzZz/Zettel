@@ -1,5 +1,7 @@
 import { RouteObject } from "react-router-dom";
 
+import { NoteView } from "components";
+
 import { ROUTES } from "../constants";
 import { Login, Register, Home } from "../pages";
 import { Authorized } from "../pages/Layouts/Authorized";
@@ -27,8 +29,13 @@ export const authorizedRoutes: RouteObject = {
   children: [
     {
       path: ROUTES.LOGIN,
-      index: true,
       element: <Home />,
+      children: [
+        {
+          path: "notes/:id",
+          element: <NoteView />,
+        },
+      ],
     },
   ],
 };

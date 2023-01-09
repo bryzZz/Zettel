@@ -11,5 +11,7 @@ export type LoginData = {
 export type RegisterData = LoginData;
 
 export type Note = {
+  id: string;
+  name: string;
   text: string;
 };

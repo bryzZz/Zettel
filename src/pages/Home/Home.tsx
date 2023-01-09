@@ -2,8 +2,9 @@ import React from "react";
 
 import { Box, useTheme } from "@mui/material";
 import { observer } from "mobx-react-lite";
+import { Outlet } from "react-router-dom";
 
-import { NoteView, Sidebar } from "components";
+import { Sidebar } from "components";
 
 export const Home: React.FC = observer(() => {
   const theme = useTheme();
@@ -16,7 +17,7 @@ export const Home: React.FC = observer(() => {
       height="100%"
     >
       <Sidebar />
-      <NoteView />
+      <Outlet />
     </Box>
   );
 });
