@@ -8,8 +8,9 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [svgr(), react()],
+  base: command === "build" ? "/Zettel/" : undefined,
   resolve: {
     alias: {
       components: path.resolve(__dirname, "./src/components"),
@@ -20,4 +21,4 @@ export default defineConfig({
       models: path.resolve(__dirname, "./src/models"),
     },
   },
-});
+}));
