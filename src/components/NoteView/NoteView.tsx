@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { Box, Button, Typography, TextField } from "@mui/material";
 import MarkdownIt from "markdown-it";
@@ -11,9 +11,8 @@ export const NoteView = observer((): JSX.Element | null => {
     notesStore: { currentNoteName, currentNote, updateCurrentNote },
   } = useStore();
 
+  const { current: md } = useRef(new MarkdownIt({ html: true }));
   const [editMode, setEditMode] = useState(false);
-
-  const md = new MarkdownIt({ html: true });
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value !== null) {
