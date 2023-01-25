@@ -15,6 +15,7 @@ export type Note = {
   title: string;
   text: string;
   place: number;
+  tags: string;
 };
 
 export interface AuthResponse {

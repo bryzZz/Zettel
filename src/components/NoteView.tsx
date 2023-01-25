@@ -45,16 +45,15 @@ export const NoteView: React.FC<NoteViewProps> = memo(
     useEffect(() => setTitle(initialTitle), [initialTitle]);
     useEffect(() => setText(initialText), [initialText]);
 
-    console.log("update NoteView");
-
     return (
-      <div className="mx-auto max-w-2xl p-4">
+      <div className="mx-auto flex max-w-2xl flex-col items-stretch">
         <TextareaAutosize
           className="mb-4 block resize-none bg-transparent text-4xl font-bold outline-none"
           cacheMeasurements
           value={title}
           onChange={handleChangeTitle}
           minRows={1.2}
+          disabled={!editMode}
         />
         {editMode ? (
           <TextareaAutosize

@@ -26,18 +26,20 @@ export const Note: React.FC = () => {
     (newText: string) => {
       const updates: Record<string, string> = { text: newText };
 
+      const tags = [...newText.matchAll(/#(\w+)/g)].map((m) => m[1]).join(".");
+
+      if (tags) {
+        updates.tags = tags;
+      }
+
       mutation.mutate({ id, updates });
     },
     [id, mutation]
   );
 
-  console.log("update Note");
-
-  // console.log(data);
-
   return (
-    <div className="h-full">
-      <div className="flex justify-end pt-4 pr-4">
+    <div className="h-full px-4 pt-4">
+      <div className="flex justify-end">
         <div className="tooltip tooltip-left" data-tip="Change view">
           <label className="swap rounded p-1 hover:bg-base-content hover:bg-opacity-10">
             <input

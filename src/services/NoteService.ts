@@ -16,7 +16,7 @@ export class NoteService {
 
   static updateNote = (data: {
     id: string;
-    updates: Partial<Pick<Note, "title" | "text" | "place">>;
+    updates: Partial<Pick<Note, "title" | "text" | "place" | "tags">>;
   }) => {
     return api.put("/notes", data);
   };
