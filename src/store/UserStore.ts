@@ -1,16 +1,14 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable prefer-destructuring */
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
+
+import axios from "axios";
 import { makeAutoObservable } from "mobx";
 
-import { LoginData, RegisterData, User } from "types";
+import { AuthService } from "services/AuthService";
+import { AuthResponse, LoginData, RegisterData, User } from "types";
 
-import { auth as firebaseAuth } from "../firebase";
+import { API_URL } from "../http";
 import { RootStore } from "./RootStore";
 
 export class UserStore {
@@ -18,60 +16,83 @@ export class UserStore {
 
   isAuth = false;
 
-  loading = true;
+  isLoading = true;
 
   constructor(private rootStore: RootStore) {
     makeAutoObservable(this);
 
-    onAuthStateChanged(firebaseAuth, (user) => {
-      if (user) {
-        const data: User = {
-          id: user.uid,
-          email: user.email!,
-        };
-
-        this.user = data;
-
-        this.isAuth = true;
-
-        this.rootStore.notesStore.subscribeToNotes();
-      } else {
-        this.isAuth = false;
-      }
-
-      this.loading = false;
-    });
+    if (localStorage.getItem("token")) {
+      this.checkAuth();
+    }
   }
 
-  register({ email, password }: RegisterData) {
-    createUserWithEmailAndPassword(firebaseAuth, email, password).catch(
-      (error) => {
-        const errorMessage = error.message;
-
-        console.error(errorMessage);
-      }
-    );
+  setAuth(value: boolean) {
+    this.isAuth = value;
   }
 
-  login({ email, password }: LoginData) {
-    this.loading = true;
+  setUser(value: User) {
+    this.user = value;
+  }
 
-    signInWithEmailAndPassword(firebaseAuth, email, password)
-      .catch((error) => {
-        const errorMessage = error.message;
+  setLoading(value: boolean) {
+    this.isLoading = value;
+  }
 
-        console.error(errorMessage);
-      })
-      .finally(() => {
-        this.loading = false;
+  async register({ email, password }: RegisterData) {
+    try {
+      const res = await AuthService.register(email, password);
+
+      localStorage.setItem("token", res.data.accessToken);
+
+      this.setAuth(true);
+      this.setUser(res.data.user);
+    } catch (error: any) {
+      console.error(error.response?.data?.message);
+    }
+  }
+
+  async login({ email, password }: LoginData) {
+    try {
+      const res = await AuthService.login(email, password);
+
+      localStorage.setItem("token", res.data.accessToken);
+
+      this.setAuth(true);
+      this.setUser(res.data.user);
+    } catch (error: any) {
+      console.error(error.response?.data?.message);
+    }
+  }
+
+  async logout() {
+    try {
+      const res = await AuthService.logout();
+
+      localStorage.removeItem("token");
+
+      this.setAuth(false);
+      this.setUser({} as User);
+    } catch (error: any) {
+      console.error(error.response?.data?.message);
+    }
+  }
+
+  async checkAuth() {
+    this.setLoading(true);
+
+    try {
+      const res = await axios.get<AuthResponse>(`${API_URL}/refresh`, {
+        withCredentials: true,
       });
-  }
 
-  logout() {
-    signOut(firebaseAuth).catch((error) => {
-      const errorMessage = error.message;
+      localStorage.setItem("token", res.data.accessToken);
 
-      console.error(errorMessage);
-    });
+      this.setAuth(true);
+      this.setUser(res.data.user);
+    } catch (error: any) {
+      console.error(error.response?.data?.message);
+    } finally {
+      this.setLoading(false);
+    }
   }
 }

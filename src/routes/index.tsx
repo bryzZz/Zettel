@@ -1,41 +1,26 @@
-import { RouteObject } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-import { NoteView } from "components";
+import { Login, Register, Notes, Note } from "pages";
+import { Authorized, Unauthorized } from "pages/Layouts";
 
-import { ROUTES } from "../constants";
-import { Login, Register, Home } from "../pages";
-import { Authorized } from "../pages/Layouts/Authorized";
-import { Unauthorized } from "../pages/Layouts/Unauthorized";
-
-export const unauthorizedRoutes: RouteObject = {
-  path: ROUTES.ROOT,
-  element: <Unauthorized />,
-  children: [
-    {
-      path: ROUTES.LOGIN,
-      index: true,
-      element: <Login />,
-    },
-    {
-      path: ROUTES.REGISTER,
-      element: <Register />,
-    },
-  ],
+export const UnauthorizedRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Unauthorized />}>
+        <Route index element={<Login />} />
+        <Route path="register" element={<Register />} />
+      </Route>
+    </Routes>
+  );
 };
 
-export const authorizedRoutes: RouteObject = {
-  path: ROUTES.ROOT,
-  element: <Authorized />,
-  children: [
-    {
-      path: ROUTES.LOGIN,
-      element: <Home />,
-      children: [
-        {
-          path: "notes/:id",
-          element: <NoteView />,
-        },
-      ],
-    },
-  ],
+export const AuthorizedRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Authorized />}>
+        <Route index element={<Notes />} />
+        <Route path=":id" element={<Note />} />
+      </Route>
+    </Routes>
+  );
 };

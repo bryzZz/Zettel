@@ -1,38 +1,30 @@
 import React from "react";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { observer } from "mobx-react-lite";
-import { useRoutes } from "react-router-dom";
-
-import { Loading } from "components/shared";
+import { BrowserRouter } from "react-router-dom";
 
 import { RootStoreContextProvider } from "./context/RootStoreContext";
-import { ThemeProvider } from "./context/ThemeProvider";
-import { unauthorizedRoutes, authorizedRoutes } from "./routes";
+import { UnauthorizedRoutes, AuthorizedRoutes } from "./routes";
 import { RootStore } from "./store/RootStore";
 
 const rootStore = new RootStore();
+const queryClient = new QueryClient();
 
 export const App: React.FC = observer(() => {
-  const {
-    userStore: { isAuth, loading },
-  } = rootStore;
+  const { userStore } = rootStore;
 
-  const getRoutes = () => {
-    if (isAuth) {
-      return authorizedRoutes;
-    }
-
-    return unauthorizedRoutes;
-  };
-
-  const routes = getRoutes();
-  const routeElement = useRoutes([routes]);
+  const Routes = userStore.isAuth ? AuthorizedRoutes : UnauthorizedRoutes;
 
   return (
-    <RootStoreContextProvider value={rootStore}>
-      <ThemeProvider>
-        <Loading loading={loading}>{routeElement}</Loading>
-      </ThemeProvider>
-    </RootStoreContextProvider>
+    <BrowserRouter>
+      <RootStoreContextProvider value={rootStore}>
+        <QueryClientProvider client={queryClient}>
+          {userStore.isLoading ? "Loading" : <Routes />}
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </RootStoreContextProvider>
+    </BrowserRouter>
   );
 });

@@ -12,6 +12,15 @@ export type RegisterData = LoginData;
 
 export type Note = {
   id: string;
-  name: string;
+  title: string;
   text: string;
+  place: number;
 };
+
+export interface AuthResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
+}
+
+export type NoteName = { id: string; title: string };
