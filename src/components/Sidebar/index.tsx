@@ -53,15 +53,16 @@ export const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="h-full w-full max-w-[17rem] border-r border-r-base-content border-opacity-10 p-4">
+    <aside className="h-full w-full max-w-[17rem] border-r border-r-base-content border-opacity-10">
       <Tabs
+        className="mb-2"
         tabsLabels={["Notes", "Search"]}
         value={tab}
         onChange={handleTabChange}
       />
 
       <TabPanel value={tab} tabValue={0}>
-        <div className="mb-2 flex items-center justify-end">
+        <div className="mb-2 flex h-[34px] items-center justify-end px-4">
           <div className="tooltip tooltip-bottom" data-tip="Create note">
             <button
               type="button"
@@ -75,16 +76,18 @@ export const Sidebar: React.FC = () => {
       </TabPanel>
 
       <TabPanel value={tab} tabValue={1}>
-        <IconInput
-          Icon={<BiSearch className="scale-110" />}
-          value={search}
-          onChange={handleSearchChange}
-          placeholder="Enter search"
-        />
-        {data?.length === 0 && <p>No matches found</p>}
+        <div className="mb-2 px-4">
+          <IconInput
+            Icon={<BiSearch className="scale-125" />}
+            value={search}
+            onChange={handleSearchChange}
+            placeholder="Enter search"
+          />
+        </div>
       </TabPanel>
 
-      <div className="flex flex-col items-stretch gap-[1px]">
+      <div className="flex flex-col items-stretch gap-[1px] px-4">
+        {data?.length === 0 && <p>No matches found</p>}
         {data?.map(({ id, title }) => (
           <NoteLink
             key={id}

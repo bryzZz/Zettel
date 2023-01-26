@@ -17,13 +17,13 @@ export const IconInput: React.FC<IconInputProps> = ({ Icon, ...props }) => {
 
   return (
     <label
-      className={`flex items-center gap-2 rounded border border-base-content border-opacity-10 px-2 py-1 transition-all ${
+      className={`flex w-full items-center gap-2 rounded border border-base-content border-opacity-10 px-2 py-1 transition-all ${
         isFocused ? "!border-opacity-50" : ""
       }`}
     >
       {Icon}
       <input
-        className="bg-transparent outline-none placeholder:text-base-content placeholder:text-opacity-50"
+        className="w-full bg-transparent outline-none placeholder:text-base-content placeholder:text-opacity-50"
         onFocus={handleFocus}
         onBlur={handleBlur}
         {...props}
