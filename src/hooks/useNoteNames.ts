@@ -1,30 +1,32 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { noteKeys } from "constants/noteKeys";
 import { NoteService } from "services/NoteService";
 import { NoteName } from "types";
 
-export const useNoteNames = (initialData?: NoteName[]) => {
+export const useNoteNames = (search?: string) => {
   const queryClient = useQueryClient();
 
   const res = useQuery<NoteName[]>({
-    queryKey: ["noteNames"],
-    queryFn: () => NoteService.getNoteNames().then((r) => r.data),
-    initialData,
+    queryKey: noteKeys.list("names", search),
+    queryFn: () => NoteService.getNoteNames(search).then((r) => r.data),
   });
 
   const createMutation = useMutation({
     mutationFn: NoteService.createNote,
     onMutate: async (newNote) => {
-      await queryClient.cancelQueries({ queryKey: ["noteNames"] });
-      const previousNoteNames = queryClient.getQueryData<NoteName[]>([
-        "noteNames",
-      ]);
+      await queryClient.cancelQueries({
+        queryKey: noteKeys.list("names", search),
+      });
+      const previousNoteNames = queryClient.getQueryData<NoteName[]>(
+        noteKeys.list("names", search)
+      );
 
       if (previousNoteNames) {
-        queryClient.setQueryData<NoteName[]>(
-          ["noteNames"],
-          [newNote, ...previousNoteNames]
-        );
+        queryClient.setQueryData<NoteName[]>(noteKeys.list("names", search), [
+          newNote,
+          ...previousNoteNames,
+        ]);
       }
 
       return { previousNoteNames };
@@ -32,20 +34,20 @@ export const useNoteNames = (initialData?: NoteName[]) => {
     onError: (err, variables, context) => {
       if (context?.previousNoteNames) {
         queryClient.setQueryData<NoteName[]>(
-          ["noteNames"],
+          noteKeys.list("names", search),
           context.previousNoteNames
         );
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["noteNames"]);
+      queryClient.invalidateQueries(noteKeys.list("names", search));
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: NoteService.deleteNote,
     onSettled: () => {
-      queryClient.invalidateQueries(["noteNames"]);
+      queryClient.invalidateQueries(noteKeys.list("names", search));
     },
   });
 

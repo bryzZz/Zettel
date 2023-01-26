@@ -26,12 +26,6 @@ export const Note: React.FC = () => {
     (newText: string) => {
       const updates: Record<string, string> = { text: newText };
 
-      const tags = [...newText.matchAll(/#(\w+)/g)].map((m) => m[1]).join(".");
-
-      if (tags) {
-        updates.tags = tags;
-      }
-
       mutation.mutate({ id, updates });
     },
     [id, mutation]

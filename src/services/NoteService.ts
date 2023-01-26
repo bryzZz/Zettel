@@ -2,8 +2,8 @@ import { api } from "../http";
 import { Note, NoteName } from "../types";
 
 export class NoteService {
-  static async getNoteNames() {
-    return api.get<NoteName[]>("/noteNames");
+  static async getNoteNames(search?: string) {
+    return api.get<NoteName[]>("/noteNames", { params: { search } });
   }
 
   static async createNote({ id, title }: { id: string; title: string }) {

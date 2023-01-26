@@ -21,6 +21,7 @@ export default defineConfig(({ command }) => ({
       models: path.resolve(__dirname, "./src/models"),
       services: path.resolve(__dirname, "./src/services"),
       lib: path.resolve(__dirname, "./src/lib"),
+      constants: path.resolve(__dirname, "./src/constants"),
     },
   },
 }));
